@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .detail-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    .back-link {
+        font-size: 0.95rem;
+        color: var(--mca-accent);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .bill-title {
+        color: var(--mca-blue);
+        font-weight: 700;
+        font-size: 2.2rem;
+        letter-spacing: -0.5px;
+    }
+
+    .info-strip {
+        background-color: #fcfcfc;
+        border: 1px solid #edf0f2;
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+    }
+    .info-icon {
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 8px;
+        border-radius: 6px;
+        margin-right: 12px;
+        color: #666;
+    }
+
+    .bill-description {
+        line-height: 1.8;
+        font-size: 1.05rem;
+        color: #444;
+    }
+
+    .form-card {
+        margin-top: 3rem;
+        border-top: 2px solid #eee;
+        padding-top: 2rem;
+    }
+    .form-label {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    .form-control {
+        padding: 0.75rem 1rem;
+        border-color: #e0e0e0;
+        background-color: #fafafa;
+        border-radius: 8px;
+    }
+    .form-control:focus {
+        background-color: #fff;
+        box-shadow: 0 0 0 0.25rem rgba(45, 90, 240, 0.1);
+    }
+</style>
+
+<div class="detail-container">
+
+    <a href="{% url 'home' %}" class="back-link">
+        <i class="bi bi-chevron-left me-2"></i> Back to all consultations
+    </a>
+
+    <div class="custom-card p-4 p-md-5 shadow-sm mb-5">
+        <h1 class="bill-title mb-2">
+            {{ consultation.title }}
+        </h1>
+
+        <p class="text-muted mb-4">
+            Published on: {{ consultation.date|date:"d F Y" }}
+        </p>
+
+        <hr class="my-4 opacity-50">
+
+        <div class="info-strip row g-3 mb-5">
+            <div class="col-md-4 info-item">
+                <div class="info-icon">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <div>
+                    <div class="small text-muted">Reference No.</div>
+                    <div class="fw-bold">{{ consultation.reference_no }}</div>
+                </div>
+            </div>
+
+            <div class="col-md-4 info-item">
+                <div class="info-icon text-success">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div>
+                    <div class="small text-muted">Status</div>
+                    <div class="text-success fw-bold">
+                        Open for Consultation
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 info-item">
+                <div class="info-icon">
+                    <i class="bi bi-calendar3"></i>
+                </div>
+                <div>
+                    <div class="small text-muted">Closing Date</div>
+                    <div class="fw-bold">
+                        {{ consultation.date|date:"d M Y" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bill-description">
+            {{ consultation.description|linebreaks }}
+        </div>
+    </div>
+    
+    <div class="form-card">
+        <h2 class="fw-bold mb-2">Submit Your Feedback</h2>
+        <p class="text-muted mb-4">
+            Your response will be submitted confidentially for official review.
+        </p>
+
+        <div class="custom-card p-4 p-md-5 shadow-sm">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label class="form-label">Full Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Organization (Optional)</label>
+                    <input
+                        type="text"
+                        name="organization"
+                        class="form-control"
+                        placeholder="Enter organization name"
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Comments / Suggestions</label>
+                    <textarea
+                        name="comment"
+                        class="form-control"
+                        rows="6"
+                        placeholder="Provide your detailed feedback here..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-mca-primary w-100 py-3 mt-2 fs-5"
+                >
+                    Submit Feedback
+                </button>
+            </form>
+            {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success mt-3">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+        </div>
+    </div>
+
+</div>
+
+<div class="text-center mt-5 pt-5 pb-4">
+    <img
+        src="https://via.placeholder.com/150x40?text=MCA+LOGO"
+        alt="MCA Logo"
+        style="opacity: 0.8; height: 40px;"
+    >
+</div>
+
+{% endblock %}

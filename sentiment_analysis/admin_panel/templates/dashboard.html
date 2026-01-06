@@ -1,0 +1,131 @@
+{% extends 'base2.html' %}
+
+{% block title %}Dashboard | MCA21{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card-pos { border-top: 4px solid #198754 !important; }
+    .card-neu { border-top: 4px solid #6c757d !important; }
+    .card-neg { border-top: 4px solid #dc3545 !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <div class="mb-4">
+        <h3 class="fw-bold text-dark">
+            Analysis for: {{ consultation.title }}
+        </h3>
+        <p class="text-secondary small">
+            {{ consultation.description }}
+        </p>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm card-pos" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h6 class="text-success fw-bold mb-3">Positive Feedback</h6>
+                    <h1 class="fw-bold text-success display-4 mb-0">
+                        {{ positive_count }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm card-neu" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h6 class="text-secondary fw-bold mb-3">Neutral Feedback</h6>
+                    <h1 class="fw-bold text-secondary display-4 mb-0">
+                        {{ neutral_count }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm card-neg" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h6 class="text-danger fw-bold mb-3">Negative Feedback</h6>
+                    <h1 class="fw-bold text-danger display-4 mb-0">
+                        {{ negative_count }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">Feedback Word Cloud</h5>
+                    <div class="text-center">
+                        <img
+                            src="https://i.imgur.com/uT7xN1g.png"
+                            class="img-fluid rounded"
+                            alt="Word Cloud"
+                            style="max-height: 380px;"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">Key Summaries</h5>
+                    <div
+                        class="ps-3"
+                        style="border-left: 4px solid #003366;
+                               font-size: 0.95rem;
+                               line-height: 1.8;
+                               color: #4b5563;">
+                        <p>
+                            This summary reflects insights generated from stakeholder feedback
+                            submitted for this consultation.
+                        </p>
+                        <p>
+                            Sentiment distribution helps policymakers understand public opinion
+                            and identify areas requiring improvement.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4 mt-2 mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">Feedback Comments</h5>
+                    
+                    <div class="comment-stack" style="max-height: 320px; overflow-y: auto; padding-right: 10px;">
+                        {% for feedback in all_feedback %}
+                        <div class="p-3 mb-2 border-bottom" style="background-color: #ffffff;">
+                            <div class="d-flex align-items-start">
+                                <span class="badge {% if feedback.sentiment == 'positive' %}bg-success{% elif feedback.sentiment == 'negative' %}bg-danger{% else %}bg-secondary{% endif %} me-2" 
+                                      style="font-size: 0.7rem; min-width: 70px; margin-top: 3px;">
+                                    {{ feedback.sentiment|upper }}
+                                </span>
+                                
+                                <p class="mb-0 text-dark" style="font-size: 0.9rem; line-height: 1.4;">
+                                    {{ feedback.comment }}
+                                </p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4">
+                            <p class="text-muted small">No feedback entries found.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

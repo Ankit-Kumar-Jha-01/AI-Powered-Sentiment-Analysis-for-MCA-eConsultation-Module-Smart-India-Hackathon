@@ -1,0 +1,77 @@
+{% extends 'base2.html' %}
+
+{% block title %}Ad-hoc Analysis | MCA21{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-dark">
+            Ad-hoc Analysis – {{ consultation.title }}
+        </h2>
+        <p class="text-secondary small">
+            {{ consultation.description }}
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-xl-6 col-lg-12">
+            <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 12px;">
+                <h5 class="fw-bold mb-4" style="color: #1a233a;">Upload CSV File</h5>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-5 mt-4">
+                        <div class="d-flex align-items-center bg-light p-3"
+                             style="border-radius: 8px; border: 1px dashed #ced4da;">
+                            <input type="file" name="csv_file"
+                                   class="form-control border-0 bg-transparent shadow-none">
+                        </div>
+                        <p class="text-secondary small mt-2 ps-1">
+                            Supported formats: .csv, .xlsx
+                        </p>
+                    </div>
+
+                    <button type="submit"
+                            class="btn w-100 py-3 fw-bold text-white"
+                            style="background-color: #003366; border-radius: 8px;">
+                        Upload and Analyze
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-lg-12">
+            <div class="card border-0 shadow-sm p-4 h-100" style="border-radius: 12px;">
+                <h5 class="fw-bold mb-4" style="color: #1a233a;">Analyze Text Block</h5>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <textarea name="text_block"
+                                  class="form-control bg-light border-0 shadow-none"
+                                  rows="8"
+                                  style="border-radius: 8px; resize: none;"
+                                  placeholder="Enter comments, one per line..."></textarea>
+                    </div>
+
+                    <button type="submit"
+                            class="btn w-100 py-3 fw-bold text-white"
+                            style="background-color: #5a6a85; border-radius: 8px;">
+                        Analyze Comments
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    {% if result %}
+    <div class="alert alert-success mt-4">
+        {{ result }}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base2.html' %}
+
+{% block title %}Word Cloud | MCA21{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-dark">
+            Word Cloud – {{ consultation.title }}
+        </h2>
+        <p class="text-secondary small">
+            {{ consultation.description }}
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm p-4"
+                 style="border-radius: 12px; min-height: 70vh;">
+
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+
+                    <div class="text-center w-100">
+                        {% if wordcloud_image %}
+                            <img src="{{ wordcloud_image }}"
+                                 class="img-fluid rounded shadow-sm"
+                                 alt="Stakeholder Feedback Word Cloud"
+                                 style="max-width: 90%; max-height: 550px; object-fit: contain;">
+                        {% else %}
+                            <img src="https://i.imgur.com/uT7xN1g.png"
+                                 class="img-fluid rounded shadow-sm"
+                                 alt="Word Cloud Placeholder"
+                                 style="max-width: 90%; max-height: 550px; object-fit: contain;">
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <p class="text-secondary small italic">
+                            Visual representation of the most frequent keywords
+                            from stakeholder feedback ({{ feedbacks.count }} comments).
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

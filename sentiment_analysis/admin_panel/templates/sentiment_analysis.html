@@ -1,0 +1,118 @@
+{% extends 'base2.html' %}
+
+{% block title %}Sentiment Analysis | MCA21{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Kept only the chart styling since comments are removed */
+    .chart-container {
+        position: relative;
+        height: 350px; /* Slightly increased for better visibility */
+        width: 100%;
+    }
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 280px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-dark fs-3 fs-md-2">
+            Sentiment Analysis – {{ consultation.title }}
+        </h2>
+        <p class="text-secondary small">
+            {{ consultation.description }}
+        </p>
+    </div>
+
+    <div class="row g-3 g-md-4 mb-5">
+        <div class="col-12 col-lg-6">
+            <div class="card border-0 shadow-sm p-3 p-md-4 h-100" style="border-radius: 12px;">
+                <h6 class="fw-bold text-muted mb-3 text-center">Sentiment Distribution (Donut)</h6>
+                <div class="chart-container">
+                    <canvas id="sentimentDonutChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card border-0 shadow-sm p-3 p-md-4 h-100" style="border-radius: 12px;">
+                <h6 class="fw-bold text-muted mb-3 text-center">Sentiment Frequency (Bar)</h6>
+                <div class="chart-container">
+                    <canvas id="sentimentBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const positiveCount = Number("{{ positive_count|default:0 }}");
+    const neutralCount = Number("{{ neutral_count|default:0 }}");
+    const negativeCount = Number("{{ negative_count|default:0 }}");
+
+    const ctxDonut = document.getElementById('sentimentDonutChart').getContext('2d');
+    new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+            labels: ['Positive', 'Neutral', 'Negative'],
+            datasets: [{
+                data: [positiveCount, neutralCount, negativeCount],
+                backgroundColor: ['#22c55e', '#94a3b8', '#ef4444'],
+                hoverOffset: 10,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { 
+                    position: 'bottom',
+                    labels: { boxWidth: 12, padding: 20, font: { size: 12, weight: 'bold' } }
+                } 
+            },
+            cutout: '70%' // Makes the donut thinner/cleaner
+        }
+    });
+
+    const ctxBar = document.getElementById('sentimentBarChart').getContext('2d');
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: ['Positive', 'Neutral', 'Negative'],
+            datasets: [{
+                label: 'Feedback Count',
+                data: [positiveCount, neutralCount, negativeCount],
+                backgroundColor: ['#22c55e', '#94a3b8', '#ef4444'],
+                borderRadius: 8,
+                barThickness: 40
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { 
+                    beginAtZero: true, 
+                    grid: { display: false },
+                    ticks: { stepSize: 1 } 
+                },
+                x: {
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+{% endblock %}

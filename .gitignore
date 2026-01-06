@@ -1,0 +1,19 @@
+sentiment_analysis/ml_model/
+
+# Environment variables
+.env
+
+db.sqlite3
+__pycache__/
+*.pyc
+
+venv/
+env/
+
+staticfiles/
+media/
+
+.DS_Store
+Thumbs.db
+
+mainApp/ml_model/final_model/model.safetensors

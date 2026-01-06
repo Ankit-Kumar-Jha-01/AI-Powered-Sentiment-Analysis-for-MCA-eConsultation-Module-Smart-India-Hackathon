@@ -1,0 +1,46 @@
+{% extends 'base2.html' %}
+
+{% block title %}Summaries | MCA21{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-dark">
+            Summaries - {{ consultation.title }}
+        </h2>
+        <p class="text-secondary small">
+            {{ consultation.description }}
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-body p-0">
+
+                    <div class="px-4 py-3 border-bottom" style="background-color: #f8fafc;">
+                        <div class="d-flex align-items-center">
+                            <div style="width: 4px; height: 24px; background-color: #003366; border-radius: 2px;" class="me-3"></div>
+                            <span class="text-secondary fw-medium">
+                                Processed and summarized {{ total_count }} comments
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white">
+                        <div class="ps-4" style="border-left: 4px solid #003366;">
+                            <p class="mb-0" style="line-height: 1.8; text-align: justify; color: #374151;">
+                                {{ summary_text }}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

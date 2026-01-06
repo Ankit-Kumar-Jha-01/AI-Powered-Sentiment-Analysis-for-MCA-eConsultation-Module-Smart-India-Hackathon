@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .hero-section {
+        background: #fff;
+        border: 1px solid #eef0f2;
+        border-radius: 12px;
+        padding: 40px 20px;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .hero-section h1 {
+        color: var(--mca-blue);
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    .consultation-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px;
+    }
+    .consultation-card h5 {
+        color: var(--mca-blue);
+        font-weight: 700;
+        margin-top: 12px;
+        min-height: 48px; 
+    }
+    .btn-view {
+        background-color: var(--mca-accent);
+        border: none;
+        padding: 12px;
+        font-weight: 500;
+        transition: opacity 0.2s;
+    }
+    .btn-view:hover {
+        opacity: 0.9;
+        color: white;
+    }
+</style>
+
+
+<div class="hero-section shadow-sm">
+    <div class="container">
+        <h1>Open for Public Comments</h1>
+        <p class="text-muted mx-auto" style="max-width: 700px;">
+            The Ministry invites comments and suggestions on the following draft papers. 
+            Your expert feedback is crucial for shaping effective and inclusive corporate policies.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4">
+
+    {% for consultation in consultations %}
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="custom-card consultation-card shadow-sm">
+            <div>
+                <span class="badge badge-feedback mb-2">Open for feedback</span>
+                <h5>{{ consultation.title }}</h5>
+                <p class="text-muted small mb-4">
+                    Published on: {{ consultation.date|date:"d F Y" }}
+                </p>
+            </div>
+            <a href="{% url 'consultation_detail' consultation.reference_no %}"
+                class="btn btn-mca-primary btn-view w-100">
+                View & Submit Feedback
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
